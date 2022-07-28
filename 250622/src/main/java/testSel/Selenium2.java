@@ -4,9 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 
-public class Selenium {
+public class Selenium2 {
 
 	public static void main(String[] args) throws InterruptedException {
 		String exePath = "./drivers/chromedriver.exe";
@@ -28,32 +27,33 @@ public class Selenium {
 		Thread.sleep(2000);
 		btnLogin.click();
 		
+		//Metodos del navegador
+		String title = driver.getTitle();
+		System.out.println("El titulo es: " + title);
 		
-	//click en AssignLeave
-		WebElement btnAssignLeave = driver.findElement(By.className("quickLinkText"));
-		btnAssignLeave.click();
+		//Validacion de URL
+		String urlDashboard = driver.getCurrentUrl();
+		System.out.println("La URL es: " + urlDashboard);
+		urlDashboard.contains("/dashboard");
 		
-		
-		//Enviar texto a employee name
-		WebElement txtEmployeeName = driver.findElement(By.name("assignleave[txtEmployee][empName]"));
-		txtEmployeeName.sendKeys("Carlos Aragon");
+		//Metodos de navegación
+		driver.navigate().back();
 		Thread.sleep(3000);
-		txtEmployeeName.clear();
+		driver.navigate().forward();
+		Thread.sleep(3000);
+		driver.navigate().refresh();
 		
-		
-		//Obtener texto de un webelement
-		String welcomeName = driver.findElement(By.id("welcome")).getText();
-		boolean name = welcomeName.contains("Welcome kathija");
-		if (name) {
-			System.out.println("El mensaje contiene el nombre de Kathija");
-		}else {
-			System.out.println("ERROR: El mensaje no contiene el nombre de Kathija");
+		//Verificar elemento displayed en la pagina
+		boolean header = driver.findElement(By.xpath("//*[@class=\"head\"]/h1")).isDisplayed();
+		if(header) {
+			System.out.println("El header esta desplegado");
 		}
+		Thread.sleep(2000);
 		
-		//Dropdowns
-		Select drpLeaveType = new Select(driver.findElement(By.id("assignleave_txtLeaveType")));
-		drpLeaveType.selectByVisibleText("US - Vacation");
-
+		//Cerar navegador web
+		//driver.close();//Cierra la ventana/pestaña actual que el webdriver este utilizando
+		driver.quit();//Cierra todas las ventanas/pestañas del navegador que el webdriver ha abierto durante la ejecición
+		
 	}
 
 }
